@@ -1,6 +1,6 @@
 
 /* Tbl.css */
-.employee-management-system {
+/* .employee-management-system {
   font-family: Arial, sans-serif;
   max-width: 1200px;
   margin: 0 auto;
@@ -105,4 +105,11 @@
 
 .employee-count {
   font-weight: bold;
+} */
+
+.select{
+  margin-bottom: 10px;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
 }

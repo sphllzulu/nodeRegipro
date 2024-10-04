@@ -44,7 +44,7 @@
 
   /* Bottom Navbar Styling */
 .bottom-navbar {
-  position: sticky;
+  position: static;
   bottom: 0;
   left: 0;
   display: flex; 

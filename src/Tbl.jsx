@@ -3,6 +3,7 @@ import { CiEdit } from 'react-icons/ci';
 import { MdDelete } from 'react-icons/md';
 import axios from 'axios';
 import styled from 'styled-components';
+import './Tbl.css';
 
 
 const Container = styled.div`
@@ -146,6 +147,12 @@ const Input = styled.input`
   border: 1px solid #ddd;
   border-radius: 4px;
 `;
+const Select= styled.input`
+ margin-bottom: 10px;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+`
 // const Container = styled.div`
 //   max-width: 1200px;
 //   margin: 0 auto;
@@ -417,6 +424,7 @@ function Tbl() {
           />
         </Popup>
       )}
+    
     </Container>
   );
 }
@@ -523,8 +531,12 @@ function AddEmployeeForm({ onAdd, onCancel }) {
       <Input type="text" name="idNumber" placeholder="ID Number" value={newEmployee.idNumber} onChange={handleChange} required />
       <Input type="email" name="email" placeholder="Email" value={newEmployee.email} onChange={handleChange} required />
       <Input type="tel" name="phone" placeholder="Phone" value={newEmployee.phone} onChange={handleChange} required />
+      <select className='select' name="status" value={newEmployee.status} onChange={handleChange} required>
+              <option value="Active">Active</option>
+              <option value="Inactive">Inactive</option>
+      </select>
       <Input type="text" name="position" placeholder="Position" value={newEmployee.position} onChange={handleChange} required />
-      <Input type="text" name="status" placeholder="Status" value={newEmployee.status} onChange={handleChange} required />
+      {/* <Input type="text" name="status" placeholder="Status" value={newEmployee.status} onChange={handleChange} required /> */}
       <Button type="submit">Add Employee</Button>
       <Button type="button" onClick={onCancel}>Cancel</Button>
     </Form>

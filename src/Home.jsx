@@ -11,7 +11,8 @@ const Home = () => {
     <div>
       <Navbar/>
       <Tbl/>
-      <BottomNavbarSmall/>
+      <footer> <BottomNavbarSmall/></footer>
+     
       
     </div>
   )
