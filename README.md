@@ -26,35 +26,74 @@ This is a full-stack Employee Management System with a React frontend and an Exp
 - Multer for handling file uploads
 - CORS for enabling cross-origin requests
 
+### Development
+- Concurrently for running multiple npm scripts simultaneously
+
 ## Setup and Installation
 
-### Frontend
 1. Clone the repository
-   ```
-   git clone 
-   ```
-2. Navigate to the frontend directory
-3. Install dependencies:
+2. Install dependencies for both frontend and backend:
    ```
    npm install
+   cd nodeRegipro && npm install
+   cd ../backend && npm install
    ```
-4. Start the development server:
+3. Set up Firebase and obtain the Admin SDK key (see Firebase Setup Details below)
+4. Place the `firebaseAdminKey.json` file in the backend directory
+5. Update the `databaseURL` and `storageBucket` in the server code with your Firebase project details
+6. In the root directory, install Concurrently:
+   ```
+   npm install concurrently --save-dev
+   ```
+7. Add the following scripts to your root `package.json`:
+   ```json
+   "scripts": {
+     "start": "concurrently \"npm run dev\" \"node backend/server\"",
+     
+   }
+   ```
+8. Start both the server and client with a single command:
    ```
    npm start
    ```
 
-### Backend
-1. Navigate to the backend directory
-2. Install dependencies:
-   ```
-   npm install express firebase-admin body-parser cors multer
-   ```
-3. Set up a Firebase project and download the admin SDK key
-4. Place the Firebase admin key (firebaseAdminKey.json) in the backend directory
-5. Start the server:
-   ```
-   node server.js
-   ```
+## Firebase Setup Details
+
+To set up Firebase for this project:
+
+1. Create a Firebase project:
+   - Go to the [Firebase Console](https://console.firebase.google.com/)
+   - Click "Add project" and follow the setup wizard
+
+2. Enable Firestore Database:
+   - In your Firebase project, go to "Firestore Database"
+   - Click "Create database" and choose a starting mode (test mode or production mode)
+
+3. Enable Storage:
+   - In your Firebase project, go to "Storage"
+   - Click "Get started" and follow the setup wizard
+
+4. Obtain the Admin SDK key:
+   - In your Firebase project, go to Project Settings > Service Accounts
+   - Click on "Generate new private key"
+   - This will download a JSON file containing your admin SDK credentials
+
+5. Configure the backend:
+   - Rename the downloaded JSON file to `firebaseAdminKey.json`
+   - Place this file in your server directory
+   - In your server code, update the following lines with your project details:
+     ```javascript
+     admin.initializeApp({
+       credential: admin.credential.cert(serviceAccount),
+       databaseURL: 'https://YOUR-PROJECT-ID.firebaseio.com',
+       storageBucket: 'YOUR-PROJECT-ID.appspot.com' 
+     });
+     ```
+   Replace `YOUR-PROJECT-ID` with your actual Firebase project ID.
+
+6. Security Note:
+   - Never commit `firebaseAdminKey.json` to version control
+   - Add it to your `.gitignore` file to prevent accidental commits
 
 ## API Endpoints
 
@@ -111,6 +150,7 @@ The frontend application uses styled-components for styling, providing a clean a
 ## Contributing
 
 Contributions are welcome! Please feel free to submit a Pull Request.
+
 
 
 
