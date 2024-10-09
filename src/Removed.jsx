@@ -8,6 +8,7 @@ import Navbar from './Navbar';
 import BottomNavbarSmall from './BottomNavbarSmall';
 import Loader from './Loader';
 import './Removed.css';
+import FirebaseImage from './FirebaseImage';
 
 function InactiveEmployees() {
   const [employees, setEmployees] = useState([]);
@@ -137,7 +138,7 @@ function InactiveEmployees() {
           {employees.map((employee) => (
             <tr key={employee.id}>
               <td>
-                <img src={employee.image} alt={employee.name} style={{ width: '50px', height: '50px', borderRadius: '50%' }} />
+              <FirebaseImage imagePath={employee.image} />
               </td>
               <td>{employee.id}</td>
               <td>{employee.name}</td>

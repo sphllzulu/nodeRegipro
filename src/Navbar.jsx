@@ -5,6 +5,8 @@ import { MdAppRegistration } from "react-icons/md";
 import { IoLogOutSharp } from "react-icons/io5";
 import { GiHamburgerMenu } from "react-icons/gi";
 import React from 'react'
+import AccountMenu from './AccountMenu';
+
 
 const Navbar = () => {
   
@@ -30,7 +32,7 @@ const Navbar = () => {
          
        </ul>
        <div>
-       <Link to="/"><IoLogOutSharp style={{fontSize:'40px'}} /></Link>
+       <AccountMenu/>
        </div>
        
      </nav>

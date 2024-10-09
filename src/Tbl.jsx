@@ -4,6 +4,7 @@ import { MdDelete } from 'react-icons/md';
 import axios from 'axios';
 import styled from 'styled-components';
 import './Tbl.css';
+import FirebaseImage from './FirebaseImage';
 
 
 const Container = styled.div`
@@ -153,133 +154,7 @@ const Select= styled.input`
   border: 1px solid #ddd;
   border-radius: 4px;
 `
-// const Container = styled.div`
-//   max-width: 1200px;
-//   margin: 0 auto;
-//   padding: 20px;
-//   font-family: 'Arial', sans-serif;
-// `;
 
-// const Controls = styled.div`
-//   display: flex;
-//   justify-content: space-between;
-//   align-items: center;
-//   margin-bottom: 20px;
-//   flex-wrap: wrap;
-
-//   @media (max-width: 768px) {
-//     flex-direction: column;
-//     align-items: stretch;
-//   }
-// `;
-
-// const SearchInput = styled.input`
-//   padding: 10px;
-//   border: 1px solid #ddd;
-//   border-radius: 4px;
-//   font-size: 16px;
-//   flex-grow: 1;
-//   margin: 10px 0;
-
-//   @media (max-width: 768px) {
-//     width: 100%;
-//   }
-// `;
-
-// const Button = styled.button`
-//   background-color: #4CAF50;
-//   color: white;
-//   padding: 10px 20px;
-//   border: none;
-//   border-radius: 4px;
-//   cursor: pointer;
-//   font-size: 16px;
-//   transition: background-color 0.3s;
-
-//   &:hover {
-//     background-color: #45a049;
-//   }
-
-//   @media (max-width: 768px) {
-//     width: 100%;
-//     margin-top: 10px;
-//   }
-// `;
-
-// const Table = styled.table`
-//   width: 100%;
-//   border-collapse: collapse;
-//   background-color: white;
-//   box-shadow: 0 1px 3px rgba(0,0,0,0.2);
-//   border-radius: 4px;
-//   overflow: hidden;
-// `;
-
-// const Th = styled.th`
-//   background-color: #f8f8f8;
-//   color: #333;
-//   font-weight: bold;
-//   padding: 12px;
-//   text-align: left;
-//   border-bottom: 2px solid #ddd;
-// `;
-
-// const Td = styled.td`
-//   padding: 12px;
-//   border-bottom: 1px solid #ddd;
-//   vertical-align: middle;
-// `;
-
-// const EmployeeImg = styled.img`
-//   width: 50px;
-//   height: 50px;
-//   border-radius: 50%;
-//   object-fit: cover;
-// `;
-
-// const ActionButton = styled.button`
-//   background: none;
-//   border: none;
-//   cursor: pointer;
-//   margin-right: 10px;
-//   transition: transform 0.2s;
-
-//   &:hover {
-//     transform: scale(1.1);
-//   }
-// `;
-
-// const PopupOverlay = styled.div`
-//   position: fixed;
-//   top: 0;
-//   left: 0;
-//   right: 0;
-//   bottom: 0;
-//   background-color: rgba(0, 0, 0, 0.5);
-//   display: flex;
-//   justify-content: center;
-//   align-items: center;
-// `;
-
-// const PopupContent = styled.div`
-//   background-color: white;
-//   padding: 20px;
-//   border-radius: 8px;
-//   width: 90%;
-//   max-width: 500px;
-// `;
-
-// const Form = styled.form`
-//   display: flex;
-//   flex-direction: column;
-// `;
-
-// const Input = styled.input`
-//   margin-bottom: 10px;
-//   padding: 8px;
-//   border: 1px solid #ddd;
-//   border-radius: 4px;
-// `;
 
 function Tbl() {
   const [employees, setEmployees] = useState([]);
@@ -293,13 +168,24 @@ function Tbl() {
     fetchEmployees();
   }, []);
 
+  // async function fetchEmployees() {
+  //   try {
+  //     const response = await axios.get('http://localhost:5000/employees');
+  //     setEmployees(response.data);
+  //     setLoading(false);
+  //   } catch (error) {
+  //     console.error("Error fetching employees: ", error);
+  //     setLoading(false);
+  //   }
+  // }
+
   async function fetchEmployees() {
     try {
       const response = await axios.get('http://localhost:5000/employees');
       setEmployees(response.data);
       setLoading(false);
     } catch (error) {
-      console.error("Error fetching employees: ", error);
+      console.error("Error fetching employees: ", error.response ? error.response.data : error.message);
       setLoading(false);
     }
   }
@@ -311,7 +197,7 @@ function Tbl() {
       if (imageFile) {
         formData.append('image', imageFile);
       }
-
+      
       await axios.post('http://localhost:5000/employee', formData, {
         headers: { 'Content-Type': 'multipart/form-data' }
       });
@@ -432,7 +318,7 @@ function Tbl() {
 function EmployeeRow({ employee, onEdit, onDelete }) {
   return (
     <tr>
-      <Td><EmployeeImg src={employee.image} alt={employee.name} /></Td>
+      <Td><FirebaseImage imagePath={employee.image} /></Td>
       <Td>{employee.id}</Td>
       <Td>{employee.name}</Td>
       <Td>{employee.age}</Td>
