@@ -1,116 +1,4 @@
 
-
-
-
-// // server.js
-// const express = require('express');
-// const admin = require('firebase-admin');
-// const bodyParser = require('body-parser');
-// const cors = require('cors');
-// const multer = require('multer');
-// const path = require('path');
-
-// const app = express();
-// app.use(bodyParser.json());
-// app.use(cors());
-
-// // Initialize Firebase Admin SDK
-// const serviceAccount = require('C');
-
-// admin.initializeApp({
-//   credential: admin.credential.cert(serviceAccount),
-//   databaseURL: 'https://employeereg-bab7e.firebaseio.com',
-//   storageBucket: 'employeereg-bab7e.appspot.com' 
-// });
-
-// const db = admin.firestore();
-// const bucket = admin.storage().bucket();
-
-// // Set up multer for handling file uploads
-// const upload = multer({ storage: multer.memoryStorage() });
-
-// // Fetch employees
-// app.get('/employees', async (req, res) => {
-//   try {
-//     const employeesSnapshot = await db.collection('employees').get();
-//     const employees = employeesSnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
-//     res.status(200).send(employees);
-//   } catch (error) {
-//     res.status(500).send('Error fetching employees');
-//   }
-// });
-
-// // Add employee
-// app.post('/employee', upload.single('image'), async (req, res) => {
-//   try {
-//     const employeeData = JSON.parse(req.body.employeeData);
-//     let imageUrl = '';
-
-//     if (req.file) {
-//       const fileName = `${Date.now()}_${req.file.originalname}`;
-//       const file = bucket.file(fileName);
-//       await file.save(req.file.buffer, { contentType: req.file.mimetype });
-//       imageUrl = `https://storage.googleapis.com/${bucket.name}/${fileName}`;
-//     }
-
-//     employeeData.image = imageUrl;
-//     const docRef = await db.collection('employees').add(employeeData);
-//     res.status(201).send({ id: docRef.id, ...employeeData });
-//   } catch (error) {
-//     console.error('Error adding employee:', error);
-//     res.status(500).send('Error adding employee');
-//   }
-// });
-
-// // Update employee
-// app.put('/employee/:id', upload.single('image'), async (req, res) => {
-//   try {
-//     const { id } = req.params;
-//     const updatedData = JSON.parse(req.body.employeeData);
-    
-//     if (req.file) {
-//       const fileName = `${Date.now()}_${req.file.originalname}`;
-//       const file = bucket.file(fileName);
-//       await file.save(req.file.buffer, { contentType: req.file.mimetype });
-//       updatedData.image = `https://storage.googleapis.com/${bucket.name}/${fileName}`;
-//     }
-
-//     await db.collection('employees').doc(id).update(updatedData);
-//     res.status(200).send({ id, ...updatedData });
-//   } catch (error) {
-//     console.error('Error updating employee:', error);
-//     res.status(500).send('Error updating employee');
-//   }
-// });
-
-// // Delete employee
-// app.delete('/employee/:id', async (req, res) => {
-//   try {
-//     const { id } = req.params;
-//     const doc = await db.collection('employees').doc(id).get();
-//     const data = doc.data();
-
-//     if (data && data.image) {
-//       const fileName = path.basename(data.image);
-//       await bucket.file(fileName).delete();
-//     }
-
-//     await db.collection('employees').doc(id).delete();
-//     res.status(200).send('Employee deleted successfully');
-//   } catch (error) {
-//     console.error('Error deleting employee:', error);
-//     res.status(500).send('Error deleting employee');
-//   }
-// });
-
-// const port = 5000;
-// app.listen(port, () => {
-//   console.log(`Server running on port ${port}`);
-// });
-
-
-
-
 const express = require('express');
 const admin = require('firebase-admin');
 const bodyParser = require('body-parser');
@@ -254,6 +142,9 @@ app.delete('/employee/:id', async (req, res) => {
 
 // New admin-related endpoints
 
+
+
+
 // Fetch all admins
 app.get('/admins', async (req, res) => {
   try {
@@ -272,10 +163,58 @@ app.get('/admins', async (req, res) => {
 
 
 
+app.get('/admins', async (req, res) => {
+  try {
+    const adminsSnapshot = await db.collection('admins').get();
+    const admins = adminsSnapshot.docs.map((doc) => {
+      const data = doc.data();
+      delete data.password; // Don't send password to client
+      return { id: doc.id, ...data, status: data.status || 'active' };
+    });
+    res.status(200).send(admins);
+  } catch (error) {
+    console.error('Error fetching admins:', error);
+    res.status(500).send('Error fetching admins');
+  }
+});
+
+
 // Add new admin
+// app.post('/admin', async (req, res) => {
+//   try {
+//     const { username, password, name, surname, age, idNumber, role } = req.body;
+//     const hashedPassword = await bcrypt.hash(password, 10);
+//     const adminData = {
+//       username,
+//       password: hashedPassword,
+//       name,
+//       surname,
+//       age,
+//       idNumber,
+//       role: role || 'admin',
+//       photo: '' 
+//     };
+//     const docRef = await db.collection('admins').add(adminData);
+//     const responseData = { ...adminData, id: docRef.id };
+//     delete responseData.password; 
+//     res.status(201).send(responseData);
+//   } catch (error) {
+//     console.error('Error adding admin:', error);
+//     res.status(500).send('Error adding admin');
+//   }
+// });
+
 app.post('/admin', async (req, res) => {
   try {
     const { username, password, name, surname, age, idNumber, role } = req.body;
+    
+    // Create user in Firebase Authentication
+    const userRecord = await admin.auth().createUser({
+      email: username, // assuming username is an email
+      password: password,
+      displayName: `${name} ${surname}`
+    });
+
     const hashedPassword = await bcrypt.hash(password, 10);
     const adminData = {
       username,
@@ -284,8 +223,9 @@ app.post('/admin', async (req, res) => {
       surname,
       age,
       idNumber,
-      role: role || 'admin', // Default to 'admin' if not specified
-      photo: '' // You can handle photo upload separately
+      role: role || 'admin',
+      photo: '',
+      uid: userRecord.uid // Store the Firebase Auth UID
     };
     const docRef = await db.collection('admins').add(adminData);
     const responseData = { ...adminData, id: docRef.id };
@@ -329,37 +269,36 @@ app.post('/admin', async (req, res) => {
 //     res.status(500).send('Error removing admin rights');
 //   }
 // });
- 
-
-// Remove admin rights
 app.put('/admin/:id/remove-rights', async (req, res) => {
   try {
     const { id } = req.params;
     const adminRef = db.collection('admins').doc(id);
     const doc = await adminRef.get();
-
+    
     if (!doc.exists) {
-      return res.status(404).send('Admin not found');
+      res.status(404).send('Admin not found');
+      return;
     }
 
-    const adminData = doc.data();
-
-    // Prevent removing rights from system admin
-    if (adminData.role === 'sysadmin') {
-      return res.status(403).send('Cannot remove rights from system admin');
+    if (doc.data().role === 'sysadmin') {
+      res.status(403).send('Cannot remove rights from system admin');
+      return;
     }
 
-    // Update role in Firestore to 'user'
+    // Update the admin's role to 'user' in Firestore
     await adminRef.update({ role: 'user' });
 
-    // Remove the user from Firebase Authentication if UID exists
-    const uid = adminData.uid;
+    // Disable the user in Firebase Authentication
+    const uid = doc.data().uid; // Make sure you have a 'uid' field in your admin documents
     if (uid) {
-      await admin.auth().deleteUser(uid);
-      console.log(`User with UID: ${uid} has been deleted from Firebase Auth.`);
+      await admin.auth().updateUser(uid, {
+        disabled: true
+      });
+    } else {
+      console.warn(`No UID found for admin ${id}. Unable to disable in Firebase Auth.`);
     }
 
-    res.status(200).send('Admin rights removed successfully and user removed from authentication');
+    res.status(200).send('Admin rights removed successfully and user disabled in authentication');
   } catch (error) {
     console.error('Error removing admin rights:', error);
     res.status(500).send('Error removing admin rights');
@@ -367,34 +306,10 @@ app.put('/admin/:id/remove-rights', async (req, res) => {
 });
 
 
-// app.put('/admin/:id/remove-rights', async (req, res) => {
-//   try {
-//     const { id } = req.params;
-//     const adminRef = db.collection('admins').doc(id);
-//     const doc = await adminRef.get();
-    
-//     if (!doc.exists) {
-//       res.status(404).send('Admin not found');
-//       return;
-//     }
 
-//     if (doc.data().role === 'sysadmin') {
-//       res.status(403).send('Cannot remove rights from system admin');
-//       return;
-//     }
 
-//     await adminRef.update({ role: 'user' });
-//     res.status(200).send('Admin rights removed successfully');
-//   } catch (error) {
-//     console.error('Error removing admin rights:', error);
-//     res.status(500).send('Error removing admin rights');
-//   }
-// });
 
 // Get admin profile
-
-
-
 app.get('/admin/:id', async (req, res) => {
   try {
     const { id } = req.params;
