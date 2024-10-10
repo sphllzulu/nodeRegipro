@@ -78,3 +78,243 @@
 // export default AdminProfile;
 
 
+// import React, { useState, useEffect } from 'react';
+// import axios from 'axios';
+// import styled from 'styled-components';
+// import Navbar from './Navbar';
+
+// const ProfileContainer = styled.div`
+//   max-width: 600px;
+//   margin: 5% auto;
+//   padding: 20px;
+//   background-color: #f9f9f9;
+//   border-radius: 8px;
+//   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+// `;
+
+// const ProfileHeader = styled.h2`
+//   text-align: center;
+//   color: #333;
+// `;
+
+// const ProfileInfo = styled.div`
+//   margin-top: 20px;
+// `;
+
+// const ProfileItem = styled.p`
+//   margin-bottom: 10px;
+//   font-size: 16px;
+//   color: #555;
+// `;
+
+// const ProfileLabel = styled.span`
+//   font-weight: bold;
+//   color: #333;
+// `;
+
+// const ProfilePicture = styled.img`
+//   width: 150px;
+//   height: 150px;
+//   border-radius: 50%;
+//   object-fit: cover;
+//   margin: 0 auto 20px;
+//   display: block;
+//   border: 3px solid #fff;
+//   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+// `;
+
+// const AdminProfile = () => {
+//   const [adminData, setAdminData] = useState(null);
+//   const [loading, setLoading] = useState(true);
+//   const [error, setError] = useState(null);
+
+//   useEffect(() => {
+//     const fetchAdminData = async () => {
+//       try {
+//         const adminId = localStorage.getItem('adminId');
+//         if (!adminId) {
+//           throw new Error('No admin ID found. Please log in.');
+//         }
+
+//         const response = await axios.get(`http://localhost:5000/admin/${adminId}`);
+//         setAdminData(response.data);
+//         setLoading(false);
+//       } catch (err) {
+//         console.error('Error fetching admin data:', err);
+//         setError(err.message);
+//         setLoading(false);
+//       }
+//     };
+
+//     fetchAdminData();
+//   }, []);
+
+//   if (loading) return <div>Loading...</div>;
+//   if (error) return <div>Error: {error}</div>;
+//   if (!adminData) return <div>No admin data found.</div>;
+
+//   return (
+//     <div>
+//       <Navbar />
+//       <ProfileContainer>
+//         <ProfileHeader>Admin Profile</ProfileHeader>
+//         {adminData.profilePictureUrl && (
+//           <ProfilePicture src={adminData.profilePictureUrl} alt={`${adminData.name} ${adminData.surname}`} />
+//         )}
+//         <ProfileInfo>
+//           <ProfileItem><ProfileLabel>Username:</ProfileLabel> {adminData.username}</ProfileItem>
+//           <ProfileItem><ProfileLabel>Name:</ProfileLabel> {adminData.name}</ProfileItem>
+//           <ProfileItem><ProfileLabel>Surname:</ProfileLabel> {adminData.surname}</ProfileItem>
+//           <ProfileItem><ProfileLabel>Email:</ProfileLabel> {adminData.email}</ProfileItem>
+//           <ProfileItem><ProfileLabel>Age:</ProfileLabel> {adminData.age}</ProfileItem>
+//           <ProfileItem><ProfileLabel>ID Number:</ProfileLabel> {adminData.idNumber}</ProfileItem>
+//           <ProfileItem><ProfileLabel>Role:</ProfileLabel> {adminData.role}</ProfileItem>
+//         </ProfileInfo>
+//       </ProfileContainer>
+//     </div>
+//   );
+// };
+
+// export default AdminProfile;
+
+
+
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import styled from 'styled-components';
+import { useNavigate } from 'react-router-dom';
+import Navbar from './Navbar';
+
+const ProfileContainer = styled.div`
+  max-width: 600px;
+  margin: 5% auto;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+`;
+
+const ProfileHeader = styled.h2`
+  text-align: center;
+  color: #333;
+`;
+
+const ProfileInfo = styled.div`
+  margin-top: 20px;
+`;
+
+const ProfileItem = styled.p`
+  margin-bottom: 10px;
+  font-size: 16px;
+  color: #555;
+`;
+
+const ProfileLabel = styled.span`
+  font-weight: bold;
+  color: #333;
+`;
+
+const ProfilePicture = styled.img`
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin: 0 auto 20px;
+  display: block;
+  border: 3px solid #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+`;
+
+const ErrorMessage = styled.div`
+  color: red;
+  text-align: center;
+  margin-top: 20px;
+`;
+
+const Button = styled.button`
+  background-color: #4CAF50;
+  color: white;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  display: block;
+  margin: 20px auto 0;
+
+  &:hover {
+    background-color: #45a049;
+  }
+`;
+
+const AdminProfile = () => {
+  const [adminData, setAdminData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchAdminData = async () => {
+      try {
+        const currentAdmin = JSON.parse(localStorage.getItem('currentAdmin'));
+        if (!currentAdmin || !currentAdmin.id) {
+          throw new Error('No admin data found. Please log in.');
+        }
+
+        // If we have the admin data in localStorage, use it directly
+        setAdminData(currentAdmin);
+        setLoading(false);
+
+        // Optionally, you can still fetch the latest data from the server
+        // const response = await axios.get(`http://localhost:5000/admin/${currentAdmin.id}`);
+        // setAdminData(response.data);
+        // setLoading(false);
+      } catch (err) {
+        console.error('Error fetching admin data:', err);
+        setError(err.message);
+        setLoading(false);
+      }
+    };
+
+    fetchAdminData();
+  }, []);
+
+  const handleLogin = () => {
+    // Redirect to login page
+    navigate('/');
+  };
+
+  if (loading) return <div>Loading...</div>;
+  if (error) {
+    return (
+      <ProfileContainer>
+        <ErrorMessage>{error}</ErrorMessage>
+        <Button onClick={handleLogin}>Go to Login</Button>
+      </ProfileContainer>
+    );
+  }
+  if (!adminData) return <div>No admin data found.</div>;
+
+  return (
+    <div>
+      <Navbar />
+      <ProfileContainer>
+        <ProfileHeader>Admin Profile</ProfileHeader>
+        {adminData.profilePictureUrl && (
+          <ProfilePicture src={adminData.profilePictureUrl} alt={`${adminData.name} ${adminData.surname}`} />
+        )}
+        <ProfileInfo>
+          <ProfileItem><ProfileLabel>Username:</ProfileLabel> {adminData.username}</ProfileItem>
+          <ProfileItem><ProfileLabel>Name:</ProfileLabel> {adminData.name}</ProfileItem>
+          <ProfileItem><ProfileLabel>Surname:</ProfileLabel> {adminData.surname}</ProfileItem>
+          <ProfileItem><ProfileLabel>Email:</ProfileLabel> {adminData.email}</ProfileItem>
+          <ProfileItem><ProfileLabel>Age:</ProfileLabel> {adminData.age}</ProfileItem>
+          <ProfileItem><ProfileLabel>ID Number:</ProfileLabel> {adminData.idNumber}</ProfileItem>
+          <ProfileItem><ProfileLabel>Role:</ProfileLabel> {adminData.role}</ProfileItem>
+        </ProfileInfo>
+      </ProfileContainer>
+    </div>
+  );
+};
+
+export default AdminProfile;

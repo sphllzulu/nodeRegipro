@@ -16,7 +16,8 @@ const Navbar = () => {
       <nav>
         <div className='logo1'>
         <MdAppRegistration style={{fontSize:'30px', color:'black'}} />
-        <h1>Regipro</h1>
+        <Link to={'/home'}><h1>Regipro</h1></Link>
+        
         </div>
        <ul className='list1'>
          <li>

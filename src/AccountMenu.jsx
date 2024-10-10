@@ -82,10 +82,11 @@ export default function AccountMenu() {
           <Avatar /> Profile
         </MenuItem>
         </Link>
-        
+        <Link to={'/removeAdmin'}>
         <MenuItem onClick={handleClose}>
-          <Avatar /> My account
+          <Avatar /> Remove Admins
         </MenuItem>
+        </Link>
         <Divider />
         <Link to={'/addAdmin'}>
         <MenuItem onClick={handleClose}>
@@ -95,12 +96,14 @@ export default function AccountMenu() {
           Add admin
         </MenuItem>
         </Link>
+        <Link to={'/'}>
         <MenuItem onClick={handleClose}>
           <ListItemIcon>
             <Logout fontSize="small" />
           </ListItemIcon>
           Logout
         </MenuItem>
+        </Link>
       </Menu>
     </React.Fragment>
   );

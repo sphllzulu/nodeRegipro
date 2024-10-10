@@ -7,7 +7,7 @@ import Removed from './Removed';
 import Login from './Login';
 import AddAdmin from './AddAdmin';
 import RemoveAdminRights from './RemoveAdminRights';
-// import AdminProfile from './AdminProfile';
+import AdminProfile from './AdminProfile';
 
 
 
@@ -26,7 +26,7 @@ function App() {
          <Route path='/removed' element={<Removed/>} />
          <Route path='/addAdmin' element={<AddAdmin/>} />
          <Route path='/removeAdmin' element={<RemoveAdminRights/>} />
-         {/* <Route path='/adminProfile' element={<AdminProfile/>} /> */}
+         <Route path='/adminProfile' element={<AdminProfile/>} />
 
          <Route path='/' element={<Login/>} />
          

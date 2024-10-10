@@ -183,9 +183,9 @@ app.get('/employees', async (req, res) => {
   }
 });
 
-app.get('/test', (req, res) => {
-  res.status(200).send('Test route working');
-});
+// app.get('/test', (req, res) => {
+//   res.status(200).send('Test route working');
+// });
 
 // Add employee
 app.post('/employee', upload.single('image'), async (req, res) => {
@@ -289,7 +289,7 @@ app.post('/admin', async (req, res) => {
     };
     const docRef = await db.collection('admins').add(adminData);
     const responseData = { ...adminData, id: docRef.id };
-    delete responseData.password; // Don't send password back to client
+    delete responseData.password; 
     res.status(201).send(responseData);
   } catch (error) {
     console.error('Error adding admin:', error);
@@ -298,31 +298,103 @@ app.post('/admin', async (req, res) => {
 });
 
 // Remove admin rights
+// app.put('/admin/:id/remove-rights', async (req, res) => {
+//   try {
+//     const { id } = req.params;
+//     const adminRef = db.collection('admins').doc(id);
+//     const doc = await adminRef.get();
+    
+//     if (!doc.exists) {
+//       res.status(404).send('Admin not found');
+//       return;
+//     }
+
+//     if (doc.data().role === 'sysadmin') {
+//       res.status(403).send('Cannot remove rights from system admin');
+//       return;
+//     }
+
+//     // Update the admin's role to 'user' in Firestore
+//     await adminRef.update({ role: 'user' });
+
+//     // Remove the user from Firebase Authentication
+//     const uid = doc.data().uid; 
+//     if (uid) {
+//       await admin.auth().deleteUser(uid);
+//     }
+
+//     res.status(200).send('Admin rights removed successfully and user removed from authentication');
+//   } catch (error) {
+//     console.error('Error removing admin rights:', error);
+//     res.status(500).send('Error removing admin rights');
+//   }
+// });
+ 
+
+// Remove admin rights
 app.put('/admin/:id/remove-rights', async (req, res) => {
   try {
     const { id } = req.params;
     const adminRef = db.collection('admins').doc(id);
     const doc = await adminRef.get();
-    
+
     if (!doc.exists) {
-      res.status(404).send('Admin not found');
-      return;
+      return res.status(404).send('Admin not found');
     }
 
-    if (doc.data().role === 'sysadmin') {
-      res.status(403).send('Cannot remove rights from system admin');
-      return;
+    const adminData = doc.data();
+
+    // Prevent removing rights from system admin
+    if (adminData.role === 'sysadmin') {
+      return res.status(403).send('Cannot remove rights from system admin');
     }
 
+    // Update role in Firestore to 'user'
     await adminRef.update({ role: 'user' });
-    res.status(200).send('Admin rights removed successfully');
+
+    // Remove the user from Firebase Authentication if UID exists
+    const uid = adminData.uid;
+    if (uid) {
+      await admin.auth().deleteUser(uid);
+      console.log(`User with UID: ${uid} has been deleted from Firebase Auth.`);
+    }
+
+    res.status(200).send('Admin rights removed successfully and user removed from authentication');
   } catch (error) {
     console.error('Error removing admin rights:', error);
     res.status(500).send('Error removing admin rights');
   }
 });
 
+
+// app.put('/admin/:id/remove-rights', async (req, res) => {
+//   try {
+//     const { id } = req.params;
+//     const adminRef = db.collection('admins').doc(id);
+//     const doc = await adminRef.get();
+    
+//     if (!doc.exists) {
+//       res.status(404).send('Admin not found');
+//       return;
+//     }
+
+//     if (doc.data().role === 'sysadmin') {
+//       res.status(403).send('Cannot remove rights from system admin');
+//       return;
+//     }
+
+//     await adminRef.update({ role: 'user' });
+//     res.status(200).send('Admin rights removed successfully');
+//   } catch (error) {
+//     console.error('Error removing admin rights:', error);
+//     res.status(500).send('Error removing admin rights');
+//   }
+// });
+
 // Get admin profile
+
+
+
 app.get('/admin/:id', async (req, res) => {
   try {
     const { id } = req.params;
