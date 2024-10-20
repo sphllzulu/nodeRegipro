@@ -324,6 +324,7 @@ import styled from 'styled-components';
 import { auth } from './firebase'; // Import your Firebase setup
 import { getFirestore, doc, getDoc } from 'firebase/firestore';
 import Navbar from './Navbar';
+import BottomNavbar from './BottomNavbarSmall';
 
 const Container = styled.div`
   max-width: 600px;
@@ -420,6 +421,7 @@ const Profile = () => {
         </>
       )}
     </Container>
+    <BottomNavbar/>
     </div>
   );
 };

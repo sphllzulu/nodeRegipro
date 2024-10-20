@@ -66,7 +66,7 @@ import { getFirestore, doc, getDoc } from 'firebase/firestore';
 
 const LoginContainer = styled.div`
   max-width: 400px;
-  margin: 0 auto;
+  margin: 50px auto; // Added top and bottom margin for vertical centering
   padding: 20px;
   background-color: #f9f9f9;
   border-radius: 8px;
@@ -95,14 +95,14 @@ const LoginContainer = styled.div`
   button {
     width: 100%;
     padding: 10px;
-    background-color: #4CAF50;
+    background-color: #008080; // Changed to teal
     color: white;
     border: none;
     border-radius: 4px;
     cursor: pointer;
 
     &:hover {
-      background-color: #45a049;
+      background-color: #006666; // Darker teal for hover state
     }
   }
 `;
@@ -112,6 +112,27 @@ function Login() {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const navigate = useNavigate();
+
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+    
+  //   try {
+  //     await signInWithEmailAndPassword(auth, email, password);
+  //     setError('');
+      
+  //     const currentUser = auth.currentUser;
+  //     const db = getFirestore();
+  //     const userDoc = await getDoc(doc(db, 'admins', currentUser.uid));
+      
+  //     if (userDoc.exists()) {
+  //       navigate('/adminProfile'); // Navigate to profile on successful login
+  //     } else {
+  //       setError('User not found in the database');
+  //     }
+  //   } catch (error) {
+  //     setError('Invalid email or password');
+  //   }
+  // };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -125,7 +146,14 @@ function Login() {
       const userDoc = await getDoc(doc(db, 'admins', currentUser.uid));
       
       if (userDoc.exists()) {
-        navigate('/adminProfile'); // Navigate to profile on successful login
+        // Store user email in local storage
+        localStorage.setItem('userEmail', email);
+        
+        // Set isSysAdmin flag in local storage
+        const isSysAdmin = email === 'sysadmin@example.com';
+        localStorage.setItem('isSysAdmin', isSysAdmin);
+        
+        navigate('/adminProfile');
       } else {
         setError('User not found in the database');
       }

@@ -28,7 +28,7 @@ const Navbar = () => {
            <Link to="/active">Active</Link>
          </li>
          <li>
-           <Link to="/removed">Removed</Link>
+           <Link to="/removed">Inactive</Link>
          </li>
          
        </ul>

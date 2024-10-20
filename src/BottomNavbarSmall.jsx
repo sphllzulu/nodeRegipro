@@ -190,8 +190,8 @@ const BottomNavbar = () => {
 
   const navItems = [
     { id: 'home', icon: Home, label: 'Home', path: '/home' },
-    { id: 'folders', icon: Folder, label: 'Folders', path: '/active' },
-    { id: 'status', icon: CheckCircle, label: 'Status', path: '/removed' },
+    { id: 'folders', icon: Folder, label: 'Active', path: '/active' },
+    { id: 'status', icon: CheckCircle, label: 'Inactive', path: '/removed' },
   ];
 
   if (!isSmallScreen) {
