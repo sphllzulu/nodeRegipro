@@ -8,6 +8,7 @@ import Navbar from './Navbar';
 import BottomNavbarSmall from './BottomNavbarSmall';
 import Loader from './Loader';
 import './Removed.css';
+import FirebaseImage from './Image';
 
 function InactiveEmployees() {
   const [employees, setEmployees] = useState([]);
@@ -134,31 +135,31 @@ function InactiveEmployees() {
           </tr>
         </thead>
         <tbody>
-          {employees.map((employee) => (
-            <tr key={employee.id}>
-              <td>
-                <img src={employee.image} alt={employee.name} style={{ width: '50px', height: '50px', borderRadius: '50%' }} />
-              </td>
-              <td>{employee.id}</td>
-              <td>{employee.name}</td>
-              <td>{employee.email}</td>
-              <td>{employee.phone}</td>
-              <td>{employee.position}</td>
-              <td>{employee.status}</td>
-              <td>
-                <button className='edit' onClick={() => handleEdit(employee)}>
-                  <CiEdit style={{ fontSize: "26px" }} />
-                </button>
-                <button className='delete' onClick={() => handleDelete(employee.id)}>
-                  <MdDelete style={{ fontSize: "26px" }} />
-                </button>
-              </td>
-            </tr>
-          ))}
+        {employees.map((employee) => (
+      <tr key={employee.id}>
+        <td data-label="Image">
+          <FirebaseImage imagePath={employee.image} />
+        </td>
+        <td data-label="ID">{employee.id}</td>
+        <td data-label="Name">{employee.name}</td>
+        <td data-label="Email">{employee.email}</td>
+        <td data-label="Phone">{employee.phone}</td>
+        <td data-label="Position">{employee.position}</td>
+        <td data-label="Status">{employee.status}</td>
+        <td data-label="Actions">
+          <button className='edit' onClick={() => handleEdit(employee)}>
+            <CiEdit style={{ fontSize: "26px" }} />
+          </button>
+          <button className='delete' onClick={() => handleDelete(employee.id)}>
+            <MdDelete style={{ fontSize: "26px" }} />
+          </button>
+        </td>
+      </tr>
+    ))}
         </tbody>
       </table>
 
-      <BottomNavbarSmall />
+      {/* <BottomNavbarSmall /> */}
     </div>
   );
 }

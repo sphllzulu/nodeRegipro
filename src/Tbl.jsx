@@ -6,6 +6,7 @@ import styled from 'styled-components';
 import './Tbl.css';
 import Image from './Image';
 import FirebaseImage from './Image';
+import BottomNavbarSmall from './BottomNavbarSmall';
 
 
 const Container = styled.div`
@@ -297,7 +298,7 @@ function Tbl() {
 
   async function fetchEmployees() {
     try {
-      const response = await axios.get('http://localhost:5000/employees');
+      const response = await axios.get('https://noderegipro.onrender.com/employees');
       setEmployees(response.data);
       setLoading(false);
     } catch (error) {
@@ -314,7 +315,7 @@ function Tbl() {
         formData.append('image', imageFile);
       }
 
-      await axios.post('http://localhost:5000/employee', formData, {
+      await axios.post('https://noderegipro.onrender.com/employee', formData, {
         headers: { 'Content-Type': 'multipart/form-data' }
       });
       await fetchEmployees();
@@ -332,7 +333,7 @@ function Tbl() {
         formData.append('image', imageFile);
       }
 
-      await axios.put(`http://localhost:5000/employee/${id}`, formData, {
+      await axios.put(`https://noderegipro.onrender.com/employee/${id}`, formData, {
         headers: { 'Content-Type': 'multipart/form-data' }
       });
       await fetchEmployees();
@@ -344,7 +345,7 @@ function Tbl() {
 
   async function handleDelete(id) {
     try {
-      await axios.delete(`http://localhost:5000/employee/${id}`);
+      await axios.delete(`https://noderegipro.onrender.com/employee/${id}`);
       await fetchEmployees();
       setShowDeletePopup(null);
     } catch (error) {
