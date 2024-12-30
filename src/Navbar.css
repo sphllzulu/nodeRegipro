@@ -39,105 +39,99 @@
 
  /* General Navbar Styling */
 /* General Navbar Styling */
+/* Navbar Styles */
+/* Navbar Styles */
 nav {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: #fff;
   padding: 10px 20px;
-  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-  position: relative;
-  z-index: 1;
+  background-color: #ffffff;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
-/* Logo Styling */
 .logo1 {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.logo1 h1 {
+  margin: 0;
+  font-size: 24px;
+  color: black;
+}
+
+.list1 {
+  display: flex;
+  gap: 20px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.list1 li a {
+  text-decoration: none;
+  color: black;
+  font-size: 16px;
+}
+
+/* Hamburger Menu Styles */
+.hamburger-menu {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background-color: #ffffff;
+  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  padding: 20px;
+}
+
+.hamburger-menu ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: space-around;
+}
+
+.hamburger-menu ul li {
   display: flex;
   align-items: center;
 }
 
-.logo1 h1 {
-  margin-left: 10px;
-  color: black;
-  font-family: 'Arial', sans-serif;
-  font-size: 24px;
-}
-
-/* List Styling */
-.list1 {
+.hamburger-menu ul li a,
+.hamburger-menu ul li div {
   display: flex;
-  list-style: none;
-}
-
-.list1 li {
-  margin-right: 20px;
-}
-
-.list1 li:last-child {
-  margin-right: 0;
-}
-
-/* Custom Link Styling */
-.list1 a {
+  flex-direction: column;
+  align-items: center;
   text-decoration: none;
   color: black;
-  font-size: 18px;
-  font-family: 'Arial', sans-serif;
-  transition: color 0.3s ease;
-}
-
-.list1 a:hover {
-  color: #555; /* Hover color */
-}
-
-/* Logout Icon Styling */
-nav div:last-child a {
-  color: black;
-}
-
-nav div:last-child a:hover {
-  color: #555;
-}
-
-/* Hamburger Menu */
-.hamburger {
-  display: none;
-  font-size: 30px;
+  font-size: 14px;
+  gap: 5px;
   cursor: pointer;
 }
 
-/* Responsive Design for smaller screens */
+.hamburger-menu ul li a:hover,
+.hamburger-menu ul li div:hover {
+  color: #007bff;
+}
+
+/* Responsive Styles */
 @media (max-width: 768px) {
-  /* Stack the navbar items vertically */
-  
-
   .list1 {
-    display: none;
-    flex-direction: column;
-    width: 100%;
+    display: none; /* Hide the regular nav links on smaller screens */
   }
 
-  .list1 li {
-    margin: 10px 0;
-  }
-
-  .list1 a {
-    padding: 10px;
-    display: block;
-    width: 100%;
-    text-align: left;
-  }
-
-  /* Hamburger menu becomes visible */
-  .hamburger {
-    display: block;
-    position: absolute;
-    top: 15px;
-    right: 20px;
-  }
-
-  /* Show the menu when it's clicked */
-  .list1.show {
+  .hamburger-menu {
     display: flex;
+    justify-content: center;
+  }
+
+  .hamburger-menu ul {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 15px;
   }
 }
