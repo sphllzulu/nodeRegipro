@@ -1,4 +1,4 @@
-// server.js
+
 const express = require('express');
 const admin = require('firebase-admin');
 const bodyParser = require('body-parser');
@@ -11,12 +11,12 @@ app.use(bodyParser.json());
 app.use(cors());
 
 // Initialize Firebase Admin SDK
-const serviceAccount = require('./firebaseAdminKey.json');
+const serviceAccount =JSON.parse(process.env.FIREBASE_ADMIN_CREDENTIALS);
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
-  databaseURL: 'https://employeereg-bab7e.firebaseio.com',
-  storageBucket: 'employeereg-bab7e.appspot.com' 
+  databaseURL:process.env.DATABASE_URL,
+  storageBucket:process.env.STORAGE_BUCKET 
 });
 
 const db = admin.firestore();
