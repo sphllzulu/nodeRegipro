@@ -4,6 +4,8 @@ import { MdDelete } from 'react-icons/md';
 import axios from 'axios';
 import styled from 'styled-components';
 import './Tbl.css';
+import Image from './Image';
+import FirebaseImage from './Image';
 
 
 const Container = styled.div`
@@ -432,7 +434,7 @@ function Tbl() {
 function EmployeeRow({ employee, onEdit, onDelete }) {
   return (
     <tr>
-      <Td><EmployeeImg src={employee.image} alt={employee.name} /></Td>
+      <Td><FirebaseImage imagePath={employee.image} /></Td>
       <Td>{employee.id}</Td>
       <Td>{employee.name}</Td>
       <Td>{employee.age}</Td>
