@@ -1,20 +1,26 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { getStorage, ref, getDownloadURL } from 'firebase/storage';
 
-const Image = () => {
-    const [image, setImage] = useState(null);
+const FirebaseImage = ({ imagePath }) => {
+  const [imageUrl, setImageUrl] = useState('');
 
-    const handleImageChange = (e) => {
-        if (e.target.files && e.target.files[0]) {
-            setImage(URL.createObjectURL(e.target.files[0]));
-        }
+  useEffect(() => {
+    const fetchImage = async () => {
+      const storage = getStorage();
+      try {
+        const url = await getDownloadURL(ref(storage, imagePath));
+        setImageUrl(url);
+      } catch (error) {
+        console.error("Error fetching image URL: ", error);
+      }
     };
 
-    return (
-        <div>
-            <input type="file" accept="image/*" onChange={handleImageChange} />
-            {image && <img src={image} alt="Uploaded Preview" style={{ width: '300px', marginTop: '20px' }} />}
-        </div>
-    );
+    if (imagePath) {
+      fetchImage();
+    }
+  }, [imagePath]);
+
+  return imageUrl ? <img src={imageUrl} alt="Employee" style={{ width: '50px', height: '50px', borderRadius: '50%', objectFit: 'cover' }} /> : null;
 };
 
-export default Image;
+export default FirebaseImage;
