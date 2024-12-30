@@ -4,6 +4,7 @@ const bodyParser = require("body-parser");
 const cors = require("cors");
 const multer = require("multer");
 const path = require("path");
+require('dotenv').config();
 
 const app = express();
 app.use(bodyParser.json());
@@ -16,12 +17,12 @@ app.use(
 );
 
 // Initialize Firebase Admin SDK
-const serviceAccount = require("./firebaseAdminKey.json");
+const serviceAccount = JSON.parse(process.env.FIREBASE_ADMIN_CREDENTIALS);
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
-  databaseURL: "https://employeeregistration-2e7ae.firebaseio.com",
-  storageBucket: "employeeregistration-2e7ae.appspot.com",
+  databaseURL:process.env.DATABASE_URL,
+  storageBucket:process.env.STORAGE_BUCKET,
 });
 
 const db = admin.firestore();
