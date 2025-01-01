@@ -8,13 +8,7 @@ require('dotenv').config();
 
 const app = express();
 app.use(bodyParser.json());
-app.use(
-  cors({
-    origin: ["http://localhost:5173","https://noderegipro-1.onrender.com"],
-    methods: ["GET", "POST", "PUT", "DELETE"],
-    allowedHeaders: ["Content-Type", "Authorization"],
-  })
-);
+app.use(cors());
 
 // Initialize Firebase Admin SDK
 const serviceAccount = JSON.parse(process.env.FIREBASE_ADMIN_CREDENTIALS);
