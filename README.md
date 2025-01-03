@@ -2,7 +2,8 @@
 
 This is a full-stack Employee Management System with a React frontend and an Express.js backend. It allows users to view, add, edit, and delete employee records, providing a user-friendly interface for managing employee data efficiently.
 
-## Login Credentials
+## Deployed app link
+https://noderegipro-2.onrender.com
 Username:sysadmin@example.com
 Password: SysAdmin123!
 
