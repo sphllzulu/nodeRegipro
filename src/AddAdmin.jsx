@@ -97,13 +97,13 @@ const AddAdmin = () => {
         profilePictureUrl,
         isDisabled: false
       };
-      delete adminData.password; // Don't store password in Firestore
+      delete adminData.password; 
 
       // Store in Firestore
       await setDoc(doc(db, 'admins', user.uid), adminData);
 
       // Send data to backend (API)
-      const response = await axios.post('http://localhost:5000/admin', adminData);
+      const response = await axios.post('/admin', adminData);
       console.log('Backend response:', response.data);
 
       // Save admin data to localStorage
