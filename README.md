@@ -12,6 +12,10 @@ This is a full-stack Employee Management System with a React frontend and an Exp
 - Upload and display employee profile images
 - Responsive design for various screen sizes
 
+## Login Credentials
+email-john.doe@example.com
+passwod-password123
+
 ## Technologies Used
 
 ### Frontend
