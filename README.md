@@ -2,6 +2,9 @@
 
 This is a full-stack Employee Management System with a React frontend and an Express.js backend. It allows users to view, add, edit, and delete employee records, providing a user-friendly interface for managing employee data efficiently.
 
+## Screenshots
+![Image](https://github.com/user-attachments/assets/3dbe79ae-ea81-4061-9020-eaa01491d3ae)
+
 ## Features
 
 - Display a list of employees in a table format
