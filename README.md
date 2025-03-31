@@ -20,6 +20,11 @@ Password: SysAdmin123!
 - Delete employees
 - Upload and display employee profile images
 - Responsive design for various screen sizes
+- User authentication (Login.jsx)
+- Admin management (AddAdmin.jsx, RemoveAdminRights.jsx, AdminProfile.jsx)
+- User activity tracking (Active.jsx, Removed.jsx)
+- Navigation components (Navbar.jsx, BottomNavbarSmall.jsx)
+- Image handling (FirebaseImage.jsx, Image.jsx)
 
 ## Technologies Used
 
@@ -41,27 +46,30 @@ Password: SysAdmin123!
 ## Setup and Installation
 
 1. Clone the repository
-2. Install dependencies for both frontend and backend:
+ ```
+git clone https://github.com/sphllzulu/nodeRegipro.git
+ ```
+3. 
+4. Install dependencies for both frontend and backend:
    ```
-   npm install
    cd nodeRegipro && npm install
    cd ../backend && npm install
    ```
-3. Set up Firebase and obtain the Admin SDK key (see Firebase Setup Details below)
-4. Place the `firebaseAdminKey.json` file in the backend directory
-5. Update the `databaseURL` and `storageBucket` in the server code with your Firebase project details
-6. In the root directory, install Concurrently:
+5. Set up Firebase and obtain the Admin SDK key (see Firebase Setup Details below)
+6. Place the `firebaseAdminKey.json` file in the backend directory
+7. Update the `databaseURL` and `storageBucket` in the server code with your Firebase project details
+8. In the root directory, install Concurrently:
    ```
    npm install concurrently --save-dev
    ```
-7. Add the following scripts to your root `package.json`:
+9. Add the following scripts to your root `package.json`:
    ```json
    "scripts": {
      "start": "concurrently \"npm run dev\" \"node backend/server\"",
      
    }
    ```
-8. Start both the server and client with a single command:
+10. Start both the server and client with a single command:
    ```
    npm start
    ```
